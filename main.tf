@@ -17,6 +17,11 @@ resource "docker_image" "gitlab_runner" {
       _GIT_TOKEN    = module.bw_platform_gitlab_api_key.data.password
     }
   }
+  triggers = {
+    dir_sha1 = sha1(join("", [
+      filesha1("${path.module}/Dockerfile")
+    ]))
+  }
 }
 
 resource "docker_volume" "gitlab_runner_home" {
